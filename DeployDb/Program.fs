@@ -23,7 +23,7 @@ let main _ =
   let template = arm {
     location Location.UKWest
     add_resource demoDatabase
-    output "connection-string" (demoDatabase.ConnectionString "demoDb")
+    output "connection-string" (demoDatabase.ConnectionString databaseName)
   }
 
   let deploymentPipeline =
