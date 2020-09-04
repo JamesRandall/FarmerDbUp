@@ -2,9 +2,6 @@ module DbUpgrade
 open System.Reflection
 open DbUp
 
-module FarmerHelpers =
-  let sqlServerPasswordParameter serverName adminPassword = (sprintf "password-for-%s" serverName),adminPassword
-
 let tryExecute =
   Result.bind (fun (outputs:Map<string,string>) ->
     try

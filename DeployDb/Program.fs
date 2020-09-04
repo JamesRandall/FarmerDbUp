@@ -3,13 +3,12 @@ open Farmer
 open Farmer.Builders
 open Sql
 open Constants
-
-let asGitHubAction = function | Ok _ -> 0 | Error e -> (printf "%s" e) ; 1
+open Helpers
 
 [<EntryPoint>]
 let main _ =
-  let sqlServerPasswordParameter =
-    Environment.GetEnvironmentVariable("ADMIN_PASSWORD") |> DbUpgrade.FarmerHelpers.sqlServerPasswordParameter serverName
+  let adminPasswordParameter =
+    Environment.GetEnvironmentVariable("ADMIN_PASSWORD") |> createSqlServerPasswordParameter serverName
 
   let demoDatabase = sqlServer {
     name serverName
@@ -28,7 +27,7 @@ let main _ =
   }
 
   let deploymentPipeline =
-    Deploy.tryExecute "demoResourceGroup" [ sqlServerPasswordParameter ]
+    Deploy.tryExecute "demoResourceGroup" [ adminPasswordParameter ]
     >> DbUpgrade.tryExecute 
   
   template |> deploymentPipeline |> asGitHubAction
